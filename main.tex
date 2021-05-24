@@ -1,0 +1,215 @@
+\documentclass[12pt]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage[spanish]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{pst-all}
+%\usepackage{pstcol}
+\setlength{\textwidth}{16.cm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+\setlength{\textheight}{22cm}
+\setlength{\headheight}{13.2pt}
+\setlength{\headsep}{10mm}
+\setlength{\marginparwidth}{30mm}
+\setlength{\topmargin}{-.5cm}
+\newcommand{\Cen}{\mathbb{C}^{n}}
+\newcommand{\Com}{\mathbb{C}}
+\newcommand{\Rn}{\mathbb{R}^{n}}
+\newcommand{\erre}{\mathbb{R}}
+\newcommand{\grados}{^{\circ}}
+\newcommand{\dB}{\text{ dB}}
+\newcommand{\radseg}{\text{ rad/seg}}
+\newcommand{\om}{\omega}
+\newcommand{\RHi}{RH_{\infty}}
+\newcommand{\BM}{\begin{bmatrix}}
+\newcommand{\EM}{\end{bmatrix}}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\Imag}{Im}
+\title{ControlRobusto}
+\author{Hernando Díaz Morales, Ph. D.}
+\date{}
+\newcounter{TareaNo}
+\setcounter{TareaNo}{3}
+%
+% Comandos para generar el logo de la Universidad Nacional
+% Definimos el color del logo
+\newgray{ungris}{0.6}
+%
+% Dimension del logo 
+\newdimen\UNlong
+%
+% Genera la U
+\newcommand{\UNU}{%
+ 	\pscustom{
+ 		\psline[linearc=0.45]{C-C}(0,1)(0,0)(1.102,0)
+		\psline(1.102,1)(0.92,1)(0.92,0.487)
+		\psline[linearc=0.35](0.92,0.152)(0.553,0.152)(0.153,0.152)(0.153,0.487)
+		\psline(0.153,1)(0,1)
+	\fill[linecolor=ungris,fillstyle=solid,fillcolor=ungris]}}
+%
+% Genera la UN
+\newcommand{\UNlogo}[1]{
+	\UNlong=#1
+	\psset{unit=1\UNlong,linewidth=0.1pt,linecolor=ungris}
+  \begin{pspicture}(-0.1,-0.1)(2.386,1.1)
+ 		\rput(0,0){\UNU}
+		\rput{180}(2.286,1){\UNU}
+	\end{pspicture}
+}
+% fin definicion de UNlogo
+%
+%% Definicion del formato de los encabezados de página
+\pagestyle{fancy}
+\newsavebox{\UNl}
+\savebox{\UNl}{\UNlogo{3mm}}
+\lhead{\usebox{\UNl}\scshape\scriptsize Control Robusto --- 2021}
+\chead{}
+\rhead{\scshape\scriptsize Tarea \theTareaNo}
+\lfoot{}
+\cfoot{\sffamily\small\thepage}
+\rfoot{}
+% Para eliminar la linea del encabezado, quitar el % de la siguiente linea
+\renewcommand{\headrulewidth}{0.25pt}
+%%
+\begin{document}
+\setcounter{TareaNo}{3}
+\begin{center}
+\textbf{Control Robusto --- Tarea \theTareaNo}\\
+Para el 27 de mayo, 2021 (tentativamente)
+\end{center}
+
+\begin{enumerate}
+\item \label{prob:matr} Calcule la norma 2 y la norma $\infty$\ de las siguientes matrices de transferencia:
+\begin{enumerate}
+	\item $G_1(s)=\left[\begin{array}{cc}
+		\frac{1}{s+1}&\frac{s+3}{\left(s+1\right)\left(s-2\right)}\\
+		\frac{10}{s-2}&\frac{5}{\left(s+1\right)}\end{array}\right]$
+	\item $G_2(s)=\left[\begin{tabular}{cc|c}1&0&1\\2&3&1\\\hline1&2&0\end{tabular}
+\right]$
+	\item $G_3(s)=\left[\begin{tabular}{cc|c}-1&-2&1\\1&0&0\\\hline2&3&0\end{tabular}
+\right]$
+	\item $G_4(s)=\left[\begin{tabular}{ccc|cc}-1&-2&-3&1&2\\
+	1&0&0&0&1\\0&1&0&2&0\\\hline1&0&0&1&0\\0&1&1&0&2\end{tabular}\right]$
+\end{enumerate}
+
+\item Sean $Q$ y $R$ matrices complejas $n\times n$ y suponga que $Q$ es no singular. Demuestre que, si, 
+$ \overline{\sigma}(R) < \underline{\sigma}(Q)$, entonces $Q + R$ es no singular.
+
+\textbf{Sug.:} Use las propiedades de los valores singulares.
+
+\item Suponga que $\Delta$ satisface $\overline{\sigma}\left(\Delta\right)=\left\|\Delta\right\|<1$. Demuestre que 
+		\begin{enumerate}
+			\item $I-\Delta$ es nosingular
+			\item La serie $\sum_{k=0}^{\infty}\Delta^k$ converge.
+			\item $\sum_{k=0}^{\infty}\Delta^k=\left(I-\Delta\right)^{-1}$
+		\end{enumerate}
+\item  En el sistema de la figura siguiente, suponga que $H$ y $\Delta $
+ambos per\-te\-ne\-cen a $\RHi$.
+
+\begin{center}
+\vspace{0.6cm}
+\psset{xunit=0.3cm}
+	\psset{yunit=0.25cm}
+	\psset{runit=0.25cm}
+	\psset{linewidth=1pt}
+	\begin{pspicture}(0,0)(22,10)
+	\psframe(8,1)(12,4)
+	\psframe(8,7)(12,10)
+	\pscircle(3.5,2.5){1}
+	\pscircle(16.5,8.5){1}
+	\psline{->}(0.5,2.5)(2.5,2.5)
+	\psline{->}(4.5,2.5)(8,2.5)
+	\psline{->}(12,2.5)(16.5,2.5)(16.5,7.5)
+	\psline{->}(20.5,8.5)(17.5,8.5)
+	\psline{->}(15.5,8.5)(12,8.5)
+	\psline{->}(8,8.5)(3.5,8.5)(3.5,3.5)
+	\uput[180](0.5,2.5){$d_2$}
+	\uput[0](20.5,8.5){$d_1$}
+	\uput[90](14,8.5){$v_1$}
+	\uput[90](6,8.5){$v_2$}
+	\rput(10,8.5){$\Delta$}
+	\rput(10,2.5){$H$}
+	\end{pspicture}		
+\end{center}
+
+
+\begin{enumerate}
+\item  Pruebe que el sistema es estable E/S (es decir, la funci\'{o}n de
+transferencia de $\begin{bmatrix}
+d_1\\d_2\end{bmatrix} \mapsto \begin{bmatrix}
+v_1\\v_2\end{bmatrix} $ es $\RHi$) si y 
+sólo si $%
+I-\Delta H$ es invertible \ en $\RHi$. \textbf{Sug.:} Use el teorema de estabilidad.
+
+\item  Suponga que $\left\| \Delta \right\| _{\infty }\left\| H\right\|
+_{\infty }<1$. Demuestre que, entonces, el sistema es estable.
+\end{enumerate}
+
+\item  Sea $G(s)=\dfrac{s-2}{\left( s+3\right) \left( s-1\right) }$, Halle
+una factorizaci\'{o}n coprima $G=nm^{-1}$ y $x,y\in \RHi$,
+tales que $xn+ym=1$. 
+
+Sean 
+\[
+	N(s)=\dfrac{\left(s-1\right)\left(s+\alpha\right)}{\left(s+2\right)\left(s+3\right)\left(s+\beta\right)};
+	\qquad
+	M(s)=\dfrac{\left(s-3\right)\left(s+\alpha\right)}{\left(s+3\right)\left(s+\beta\right)}
+\]
+Pruebe que $(N,M)$ también es una factorización coprima para cualquier $\alpha>0$ y $\beta>0$.
+\item  Sea  $P(s)=\dfrac{1}{s-1}$. Encuentre el conjunto de todos los controladores que estabilizan a esta planta. A continuación, verifique que  $K=-4$ es un controlador estabilizador y encuentre el factor $Q$ que da este controlador, a partir de su controlador original.
+\item Encuentre todos los controladores que estabilizan la planta
+\[
+G(s)=\dfrac{s-1}{(s-2)(s^2 +1)}
+\]
+\item Un sistema MIMO tiene la matriz de transferencia 
+\[
+G(s)=\begin{bmatrix}\dfrac{-5}{25s+1}&\dfrac{s^2-0.005s-0.005}{s(s+1)}\\[4mm]
+\dfrac{1}{25s+1}&\dfrac{-0.0023}{s} \end{bmatrix}
+\]
+\begin{enumerate}
+\item Encuentre una factorización doblemente coprima en $\RHi$ para esta planta.
+\item Halle un controlador que estabilice a la planta.
+\end{enumerate}
+\item Un modelo para un reactor ``batch'' inestable, descrito por Rosenbrock puede ser linealizado en la forma:
+\[
+	\dot{x}=\begin{bmatrix}
+	1.38& -0.2077 &  6.715 &  -5.676\\
+	-0.5814 & -4.29 & 0 & 0.675\\
+	1.067 & 4.273 & 1.343 & -2.104\\
+	0.048 & 4.273 & 1.343 & -2.104
+	\end{bmatrix}\, x +
+	\begin{bmatrix}
+	0 & 0\\
+	5.679 & 0\\
+	1.136 & -3.146\\
+	1.136 & 0
+	\end{bmatrix}\, u
+\]
+\[
+	y=\begin{bmatrix} 1& 0& 1& -1\\
+	0 & 1 & 0& 0
+	\end{bmatrix}\, x
+\]
+\begin{enumerate}
+\item Encuentre factorizaciones doblemente coprima en $\RHi$ para este sistema
+\item Encuentre un controlador que estabilice a este sistema, basado en la factorización hallada. Muestre que efectivamente estabiliza al sistema.
+\item Muestre que el controlador proporcional integral siguiente estabiliza al sistema también.
+\[
+	K(s) = -\begin{bmatrix} 0&2\\-5&0\end{bmatrix}-\dfrac{1}{s}\begin{bmatrix} 0&2\\-8&0\end{bmatrix}
+\]
+\item Muestre que el controlador anterior se puede escribir como una parametrización del controlador hallado arriba. 
+\end{enumerate}
+
+\end{enumerate}
+\begin{thebibliography}{9}
+\bibitem{Green}M. Green. D.J.N. Limebeer.  \textit{Linear Robust Control.} Prentice Hall, 1995. 1995.
+\end{thebibliography}
+
+\end{document}
+
